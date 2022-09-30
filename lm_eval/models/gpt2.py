@@ -34,17 +34,17 @@ class HFLM(BaseLM):
             )
 
         # TODO: update this to be less of a hack once subfolder is fixed in HF
+        revision = revision + ("/" + subfolder if subfolder is not None else "")
+
         self.gpt2 = transformers.AutoModelForCausalLM.from_pretrained(
             pretrained,
-            revision=revision + ("/" + subfolder if subfolder is not None else ""),
+            revision=revision,
         ).to(self.device)
         self.gpt2.eval()
 
-        # pretrained tokenizer for neo is broken for now so just hard-coding this to gpt2
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(
             pretrained if tokenizer is None else tokenizer,
             revision=revision,
-            subfolder=subfolder,
         )
 
         assert isinstance(
@@ -84,11 +84,12 @@ class HFLM(BaseLM):
 
     @property
     def max_length(self):
-        try:
+        """try:
             return self.gpt2.config.n_ctx
         except AttributeError:
             # gptneoconfig doesn't have n_ctx apparently
-            return self.gpt2.config.max_position_embeddings
+            return self.gpt2.config.max_position_embeddings"""
+        return 1025
 
     @property
     def max_gen_toks(self):
