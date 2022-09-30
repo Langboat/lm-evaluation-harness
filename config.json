@@ -1,5 +1,5 @@
 {
     "tokenizer_name": "EleutherAI/gpt-neo-125M",
     "chunk_size": 64,
-    "request_server": "http://10.19.1.35:8000/"
+    "request_server": "127.0.0.1"
 }
